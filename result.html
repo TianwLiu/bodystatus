@@ -1,0 +1,86 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>生理节律预测结果</title>
+</head>
+<body>
+<!-- 图表容器 DOM -->
+<div id="container"  style="min-width:400px;height:400px"></div>
+<div id="container2"  style="min-width:400px;height:400px"></div>
+<!-- 引入 highcharts.js -->
+<script src="./highcharts.js"></script>
+<script>
+    // 图表配置
+
+    // 图表初始化函数
+
+    function bodystatus(year,month,day) {
+        birthday=new Date(year,month-1,day);
+        console.log(birthday);
+        var currentday=new Date();
+        console.log(currentday);
+        this.interval=(currentday-birthday)/(60*60*1000*24);
+
+        this.iq=[];
+        this.emotion=[];
+        this.strength=[];
+        this.dates=[];
+
+        let date_limit=new Date();
+        date_limit.setDate(date_limit.getDate()+60);
+
+        var days=this.interval
+        for(let date_i=new Date();date_i<date_limit;date_i.setDate(date_i.getDate()+1)){
+            let iq_date_i=Math.sin(2*Math.PI/33*days);
+            let emotion_date_i=Math.sin(2*Math.PI/28*days);
+            let strength_date_i=Math.sin(2*Math.PI/23*days);
+            this.iq.push([date_i.toLocaleDateString(),iq_date_i]);
+            this.emotion.push([date_i.toLocaleDateString(),emotion_date_i]);
+            this.strength.push([date_i.toLocaleDateString(),strength_date_i]);
+            this.dates.push(date_i.toLocaleDateString());
+            days+=1;
+        }
+
+    }
+    var arg_url=window.location.search;
+    //console.log(arg_url);
+    //console.log(arg_url.split("=")[1].split("-"))
+    var birth_info=arg_url.split("=")[1].split("-")
+    var bodys=new bodystatus(birth_info[0],birth_info[1],birth_info[2]);
+    //console.log(bodys.interval);
+    //console.log(bodys.iq);
+    var options = {
+        chart: {
+            type: 'spline'                          //指定图表的类型，默认是折线图（line）
+        },
+        title: {
+            text: '生理节律图'                 // 标题
+        },
+        xAxis: {
+            categories:bodys.dates
+        },
+        yAxis: {
+            title: {
+                text: '相对能量值'                // y 轴标题
+            }
+        },
+        series: [
+            {
+                name: '智力',
+                data: bodys.iq
+            },{
+                name:'情绪',
+                data:bodys.emotion
+            },{
+                name: '体力',
+                data: bodys.strength
+            }
+
+        ]
+    };
+
+    var chart = Highcharts.chart('container', options);
+
+</script>
+</body>
+</html>

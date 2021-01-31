@@ -1,2 +1,5 @@
-# bodystatus
-can show your bodystatus through 3 aspects of iq,emotion,strength
+bodystatus
+=============================================================
+It can show your bodystatus of 3 aspects of iq,emotion,strength  
+Pure static files. No back-end needed. Just put it in your nginx server, that's it.
+_______________________________________________________________
